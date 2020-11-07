@@ -6,7 +6,15 @@ class App extends React.Component {
   render() {
     const human1 = { name: "Hoge", age: 20 };
     const human2 = { name: "Fuga", age: 30 };
-    return <MyTable humans={[human1, human2]} />;
+    const human3 = { name: "Piyo", age: 40 };
+    const human4 = { name: "Foo", age: 1 };
+    return (
+      <div>
+        <MyTable humans={[human1, human2, human3, human4]}
+                 filter={(human) => human.age > 25}/>
+        <MyTable humans={[human1, human2, human3, human4]} />
+      </div>
+    );
   }
 }
 
@@ -15,8 +23,11 @@ type Human = {
   age: number;
 }
 
+type FilterFunc = (human: Human) => boolean;
+
 type MyTableProps = {
   humans: Human[];
+  filter?: FilterFunc;
 }
 
 class MyTable extends React.Component<MyTableProps> {
@@ -24,9 +35,18 @@ class MyTable extends React.Component<MyTableProps> {
     super(props);
   }
   render() {
-    const rows = this.props.humans.map((human) => <HumanRow human={human}/>);
+    const filter: FilterFunc = this.props.filter || ((human) => true);
+    const rows = this.props.humans
+                     .filter(filter)
+                     .map((human) => <HumanRow human={human}/>);
     return (
       <table>
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>age</th>
+          </tr>
+        </thead>
         <tbody>
           {rows}
         </tbody>
