@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import "./mystyle.css";
 
 class App extends React.Component {
   render() {
@@ -23,11 +24,25 @@ class MyTable extends React.Component<MyTableProps> {
     super(props);
   }
   render() {
-    const divList = this.props.humans.map((human) => <div>{human.name} ({human.age})</div>);
+    const rows = this.props.humans.map((human) => <HumanRow human={human}/>);
     return (
-      <div>
-        {divList}
-      </div>
+      <table>
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
+    )
+  }
+}
+
+class HumanRow extends React.Component<{ human: Human }> {
+  render() {
+    const human = this.props.human
+    return (
+      <tr>
+        <td>{human.name}</td>
+        <td>{human.age}</td>
+      </tr>
     )
   }
 }
