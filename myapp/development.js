@@ -1,11 +1,13 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
+const dist = `${__dirname}/dist`
+
 module.exports = {
   mode: 'development',
   entry: './src/main.tsx',
   output: {
-    path: `${__dirname}/dist`,
-    filename: "main.js"
+    path: dist,
+    filename: "main.js",
   },
   module: {
     rules: [
@@ -23,6 +25,10 @@ module.exports = {
           },
           'sass-loader'
         ]
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader'
       }
     ]
   },
@@ -35,5 +41,13 @@ module.exports = {
       template: './src/index.html',
       filename: 'index.html'
     })
-  ]
+  ],
+  devServer: {
+    contentBase: dist,
+    watchContentBase: true,
+    inline: true,
+    hot: true
+    /* publicPath: '/',
+     * inline: true */
+  }
 };

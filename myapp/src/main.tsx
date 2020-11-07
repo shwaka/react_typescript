@@ -5,7 +5,7 @@ import "./mystyle.scss";
 class App extends React.Component {
   render() {
     const human1 = { name: "Hoge", age: 20 };
-    const human2 = { name: "Fuga", age: 30};
+    const human2 = { name: "Fuga", age: 30 };
     return <MyTable humans={[human1, human2]} />;
   }
 }
