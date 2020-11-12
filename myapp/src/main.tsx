@@ -6,6 +6,7 @@ interface IAppProps { }
 interface IAppState {
   filter: FilterFunc;
   mytext: string;
+  myradio: string;
 }
 
 class App extends React.Component<IAppProps, IAppState> {
@@ -13,7 +14,8 @@ class App extends React.Component<IAppProps, IAppState> {
     super(props);
     this.state = {
       filter: (human: Human) => human.age > 25,
-      mytext: "hoge"
+      mytext: "hoge",
+      myradio: "foo"
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -29,6 +31,16 @@ class App extends React.Component<IAppProps, IAppState> {
         <form>
           <label>
             <input type="text" value={this.state.mytext} onChange={this.handleChange} />
+          </label>
+          <label>
+            <input type="radio" name="myradio" value="foo" checked={this.state.myradio === "foo"}
+                   onChange={() => this.setState({myradio: "foo"})} />
+            foo
+          </label>
+          <label>
+            <input type="radio" name="myradio" value="bar" checked={this.state.myradio === "bar"}
+                   onChange={() => this.setState({myradio: "bar"})} />
+            bar
           </label>
         </form>
         <MyTable humans={[human1, human2, human3, human4]}
