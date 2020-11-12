@@ -1,5 +1,8 @@
 import React, {ChangeEvent} from 'react';
 import { render } from 'react-dom';
+import { ThresholdForm } from './ThresholdForm';
+import { Human, FilterFunc } from './Human';
+import { MyTable } from './MyTable';
 import "./mystyle.scss";
 
 interface IAppProps { }
@@ -52,88 +55,6 @@ class App extends React.Component<IAppProps, IAppState> {
 
   handleChange(event: ChangeEvent<HTMLInputElement>) {
     this.setState({mytext: event.target.value});
-  }
-}
-
-interface IThresholdFormProps {
-  thresholds: number[];
-  currentThreshold: number;
-  handleChange: (threshold: number) => void;
-}
-
-class ThresholdForm extends React.Component<IThresholdFormProps> {
-  constructor(props: IThresholdFormProps) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <form>
-        {this.props.thresholds.map((threshold) => this.labelForThreshold(threshold))}
-      </form>
-    );
-  }
-
-  labelForThreshold(threshold: number) {
-    const val: string = threshold.toString();
-    return (
-      <label key={val}>
-        <input type="radio" name="myradio" value={val}
-               checked={this.props.currentThreshold === threshold}
-               onChange={() => this.props.handleChange(threshold)} />
-        {val}
-      </label>
-    );
-  }
-}
-
-type Human = {
-  name: string;
-  age: number;
-}
-
-type FilterFunc = (human: Human) => boolean;
-
-type MyTableProps = {
-  humans: Human[];
-  filter?: FilterFunc;
-}
-
-class MyTable extends React.Component<MyTableProps> {
-  constructor(props: MyTableProps) {
-    super(props);
-  }
-  render() {
-    const filter: FilterFunc = this.props.filter || ((human) => true);
-    const rows = this.props.humans
-                     .filter(filter)
-                     .map((human) => <HumanRow human={human}
-                                               key={human.name + human.age.toString()}/>);
-    return (
-      <table>
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>age</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows}
-        </tbody>
-      </table>
-    )
-  }
-}
-
-class HumanRow extends React.Component<{ human: Human }> {
-  render() {
-    const human = this.props.human
-    return (
-      <tr>
-        <td>{human.name}</td>
-        <td>{human.age}</td>
-      </tr>
-    )
   }
 }
 
