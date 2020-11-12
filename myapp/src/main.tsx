@@ -6,21 +6,22 @@ interface IAppProps { }
 interface IAppState {
   filter: FilterFunc;
   mytext: string;
-  myradio: string;
+  threshold: number;
 }
 
 class App extends React.Component<IAppProps, IAppState> {
   private thresholds: number[];
   constructor(props: IAppProps) {
     super(props);
-    this.thresholds = [15, 25, 35];
+    this.thresholds = [0, 10, 25, 35, 50];
     this.state = {
       filter: (human: Human) => human.age > 25,
       mytext: "hoge",
-      myradio: this.thresholds[0].toString()
+      threshold: this.thresholds[0]
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleThresholdChange = this.handleThresholdChange.bind(this);
   }
 
   render() {
@@ -34,13 +35,42 @@ class App extends React.Component<IAppProps, IAppState> {
           <label>
             <input type="text" value={this.state.mytext} onChange={this.handleChange} />
           </label>
-          {this.thresholds.map((threshold) => this.labelForThreshold(threshold))}
         </form>
-        <div>{this.state.myradio} is selected</div>
+        <ThresholdForm thresholds={this.thresholds} currentThreshold={this.state.threshold}
+                       handleChange={this.handleThresholdChange} />
+        <div>{this.state.threshold} is selected</div>
         <MyTable humans={[human1, human2, human3, human4]}
-                 filter={this.state.filter}/>
+                 filter={(human: Human) => human.age > this.state.threshold}/>
         <MyTable humans={[human1, human2, human3, human4]} />
       </div>
+    );
+  }
+
+  handleThresholdChange(threshold: number) {
+    this.setState({threshold: threshold});
+  }
+
+  handleChange(event: ChangeEvent<HTMLInputElement>) {
+    this.setState({mytext: event.target.value});
+  }
+}
+
+interface IThresholdFormProps {
+  thresholds: number[];
+  currentThreshold: number;
+  handleChange: (threshold: number) => void;
+}
+
+class ThresholdForm extends React.Component<IThresholdFormProps> {
+  constructor(props: IThresholdFormProps) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <form>
+        {this.props.thresholds.map((threshold) => this.labelForThreshold(threshold))}
+      </form>
     );
   }
 
@@ -49,15 +79,11 @@ class App extends React.Component<IAppProps, IAppState> {
     return (
       <label key={val}>
         <input type="radio" name="myradio" value={val}
-               checked={this.state.myradio === val}
-               onChange={() => this.setState({myradio: val})} />
+               checked={this.props.currentThreshold === threshold}
+               onChange={() => this.props.handleChange(threshold)} />
         {val}
       </label>
     );
-  }
-
-  handleChange(event: ChangeEvent<HTMLInputElement>) {
-    this.setState({mytext: event.target.value});
   }
 }
 
