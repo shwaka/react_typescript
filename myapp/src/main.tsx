@@ -2,7 +2,16 @@ import React from 'react';
 import { render } from 'react-dom';
 import "./mystyle.scss";
 
-class App extends React.Component {
+interface IAppProps { }
+interface IAppState {
+  filter: FilterFunc;
+}
+
+class App extends React.Component<IAppProps, IAppState> {
+  constructor(props: IAppProps) {
+    super(props);
+    this.state = {filter: (human: Human) => human.age > 25}
+  }
   render() {
     const human1 = { name: "Hoge", age: 20 };
     const human2 = { name: "Fuga", age: 30 };
@@ -11,7 +20,7 @@ class App extends React.Component {
     return (
       <div>
         <MyTable humans={[human1, human2, human3, human4]}
-                 filter={(human) => human.age > 25}/>
+                 filter={this.state.filter}/>
         <MyTable humans={[human1, human2, human3, human4]} />
       </div>
     );
