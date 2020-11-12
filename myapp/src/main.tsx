@@ -1,17 +1,24 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import { render } from 'react-dom';
 import "./mystyle.scss";
 
 interface IAppProps { }
 interface IAppState {
   filter: FilterFunc;
+  mytext: string;
 }
 
 class App extends React.Component<IAppProps, IAppState> {
   constructor(props: IAppProps) {
     super(props);
-    this.state = {filter: (human: Human) => human.age > 25}
+    this.state = {
+      filter: (human: Human) => human.age > 25,
+      mytext: "hoge"
+    }
+
+    this.handleChange = this.handleChange.bind(this);
   }
+
   render() {
     const human1 = { name: "Hoge", age: 20 };
     const human2 = { name: "Fuga", age: 30 };
@@ -19,11 +26,20 @@ class App extends React.Component<IAppProps, IAppState> {
     const human4 = { name: "Foo", age: 1 };
     return (
       <div>
+        <form>
+          <label>
+            <input type="text" value={this.state.mytext} onChange={this.handleChange} />
+          </label>
+        </form>
         <MyTable humans={[human1, human2, human3, human4]}
                  filter={this.state.filter}/>
         <MyTable humans={[human1, human2, human3, human4]} />
       </div>
     );
+  }
+
+  handleChange(event: ChangeEvent<HTMLInputElement>) {
+    this.setState({mytext: event.target.value});
   }
 }
 
