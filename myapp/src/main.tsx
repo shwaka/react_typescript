@@ -10,12 +10,14 @@ interface IAppState {
 }
 
 class App extends React.Component<IAppProps, IAppState> {
+  private thresholds: number[];
   constructor(props: IAppProps) {
     super(props);
+    this.thresholds = [15, 25, 35];
     this.state = {
       filter: (human: Human) => human.age > 25,
       mytext: "hoge",
-      myradio: "foo"
+      myradio: this.thresholds[0].toString()
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -32,21 +34,25 @@ class App extends React.Component<IAppProps, IAppState> {
           <label>
             <input type="text" value={this.state.mytext} onChange={this.handleChange} />
           </label>
-          <label>
-            <input type="radio" name="myradio" value="foo" checked={this.state.myradio === "foo"}
-                   onChange={() => this.setState({myradio: "foo"})} />
-            foo
-          </label>
-          <label>
-            <input type="radio" name="myradio" value="bar" checked={this.state.myradio === "bar"}
-                   onChange={() => this.setState({myradio: "bar"})} />
-            bar
-          </label>
+          {this.thresholds.map((threshold) => this.labelForThreshold(threshold))}
         </form>
+        <div>{this.state.myradio} is selected</div>
         <MyTable humans={[human1, human2, human3, human4]}
                  filter={this.state.filter}/>
         <MyTable humans={[human1, human2, human3, human4]} />
       </div>
+    );
+  }
+
+  labelForThreshold(threshold: number) {
+    const val: string = threshold.toString();
+    return (
+      <label key={val}>
+        <input type="radio" name="myradio" value={val}
+               checked={this.state.myradio === val}
+               onChange={() => this.setState({myradio: val})} />
+        {val}
+      </label>
     );
   }
 
@@ -75,7 +81,8 @@ class MyTable extends React.Component<MyTableProps> {
     const filter: FilterFunc = this.props.filter || ((human) => true);
     const rows = this.props.humans
                      .filter(filter)
-                     .map((human) => <HumanRow human={human}/>);
+                     .map((human) => <HumanRow human={human}
+                                               key={human.name + human.age.toString()}/>);
     return (
       <table>
         <thead>
