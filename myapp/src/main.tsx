@@ -1,13 +1,13 @@
 import React, {ChangeEvent} from 'react';
 import { render } from 'react-dom';
 import { ThresholdForm } from './ThresholdForm';
-import { Human, FilterFunc } from './Human';
+import { Human } from './Human';
 import { MyTable } from './MyTable';
 import "./mystyle.scss";
 
 interface IAppProps { }
 interface IAppState {
-  filter: FilterFunc;
+  filter: (human: Human) => boolean;
   mytext: string;
   threshold: number;
 }

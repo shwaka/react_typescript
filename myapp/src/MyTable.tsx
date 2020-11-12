@@ -1,5 +1,7 @@
 import React from 'react';
-import { Human, FilterFunc } from './Human';
+import { Human } from './Human';
+
+type FilterFunc = (human: Human) => boolean
 
 type MyTableProps = {
   humans: Human[];
