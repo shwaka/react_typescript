@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Human } from './Human';
 
 type FilterFunc<T> = (data: T) => boolean
 
@@ -9,7 +8,11 @@ interface MyTableProps<T> {
   keys: (keyof T)[];
 }
 
-export class MyTable<T> extends React.Component<MyTableProps<T>> {
+export interface IToKey {
+  toKey(): string;
+}
+
+export class MyTable<T extends IToKey> extends React.Component<MyTableProps<T>> {
   constructor(props: MyTableProps<T>) {
     super(props);
   }
@@ -17,7 +20,8 @@ export class MyTable<T> extends React.Component<MyTableProps<T>> {
     const filter: FilterFunc<T> = this.props.filter || ((data) => true);
     const rows = this.props.dataList
                      .filter(filter)
-                     .map((data) => <Row data={data} keys={this.props.keys}/>);
+                     .map((data) => <Row data={data} keys={this.props.keys}
+                                         key={data.toKey()}/>);
     // ↓key は数値とかシンボルかもしれないので toString() してる
     return (
       <table>

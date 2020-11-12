@@ -28,10 +28,10 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   render() {
-    const human1 = { name: "Hoge", age: 20 };
-    const human2 = { name: "Fuga", age: 30 };
-    const human3 = { name: "Piyo", age: 40 };
-    const human4 = { name: "Foo", age: 1 };
+    const human1 = new Human("Hoge", 20);
+    const human2 = new Human("Fuga", 30);
+    const human3 = new Human("Piyo", 40);
+    const human4 = new Human("Foo", 1);
     return (
       <div>
         <form>
