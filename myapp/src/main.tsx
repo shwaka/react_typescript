@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import { render } from 'react-dom';
 import { ThresholdForm } from './ThresholdForm';
-import { Human } from './Human';
+import { Human, NameColumn, AgeColumn } from './Human';
 import { MyTable } from './MyTable';
 import "./mystyle.scss";
 
@@ -43,10 +43,10 @@ class App extends React.Component<IAppProps, IAppState> {
                        handleChange={this.handleThresholdChange} />
         <div>{this.state.threshold} is selected</div>
         <MyTable dataList={[human1, human2, human3, human4]}
-                 keys={["name", "age"]}
+                 columns={[new NameColumn(), new AgeColumn()]}
                  filter={(human: Human) => human.age > this.state.threshold}/>
         <MyTable dataList={[human1, human2, human3, human4]}
-                 keys={["name", "age"]}/>
+                 columns={[new NameColumn(), new AgeColumn()]} />
       </div>
     );
   }

@@ -1,11 +1,12 @@
 import React from 'react';
+import { Column } from './Column';
 
 type FilterFunc<T> = (data: T) => boolean
 
 interface MyTableProps<T> {
   dataList: T[];
   filter?: FilterFunc<T>;
-  keys: (keyof T)[];
+  columns: Column<T>[];
 }
 
 export interface IToKey {
@@ -18,16 +19,17 @@ export class MyTable<T extends IToKey> extends React.Component<MyTableProps<T>> 
   }
   render() {
     const filter: FilterFunc<T> = this.props.filter || ((data) => true);
+    // const keys: string[] = this.props.columns.map((col) => col.key);
     const rows = this.props.dataList
                      .filter(filter)
-                     .map((data) => <Row data={data} keys={this.props.keys}
+                     .map((data) => <Row data={data} columns={this.props.columns}
                                          key={data.toKey()}/>);
     // ↓key は数値とかシンボルかもしれないので toString() してる
     return (
       <table>
         <thead>
           <tr>
-            {this.props.keys.map((key) => <th key={key.toString()}>{key}</th>)}
+            {this.props.columns.map((col) => <th key={col.key}>{col.header}</th>)}
           </tr>
         </thead>
         <tbody>
@@ -40,7 +42,7 @@ export class MyTable<T extends IToKey> extends React.Component<MyTableProps<T>> 
 
 interface IRowProps<T> {
   data: T;
-  keys: (keyof T)[];
+  columns: Column<T>[];
 }
 
 class Row<T> extends React.Component<IRowProps<T>> {
@@ -48,12 +50,18 @@ class Row<T> extends React.Component<IRowProps<T>> {
     super(props);
   }
   render() {
-    const data: T = this.props.data;
-    const keys: (keyof T)[] = this.props.keys;
     return (
       <tr>
-        {keys.map((key) => <td key={key.toString()}>{data[key]}</td>)}
+        {this.props.columns.map((col) => this.createTd(col))}
       </tr>
     )
+  }
+
+  createTd(col: Column<T>): JSX.Element {
+    return (
+      <td key={col.key}>
+        {col.toElement(this.props.data)}
+      </td>
+    );
   }
 }
