@@ -42,9 +42,11 @@ class App extends React.Component<IAppProps, IAppState> {
         <ThresholdForm thresholds={this.thresholds} currentThreshold={this.state.threshold}
                        handleChange={this.handleThresholdChange} />
         <div>{this.state.threshold} is selected</div>
-        <MyTable humans={[human1, human2, human3, human4]}
+        <MyTable dataList={[human1, human2, human3, human4]}
+                 keys={["name", "age"]}
                  filter={(human: Human) => human.age > this.state.threshold}/>
-        <MyTable humans={[human1, human2, human3, human4]} />
+        <MyTable dataList={[human1, human2, human3, human4]}
+                 keys={["name", "age"]}/>
       </div>
     );
   }

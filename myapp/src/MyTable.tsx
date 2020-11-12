@@ -1,29 +1,29 @@
 import React from 'react';
-import { Human } from './Human';
+// import { Human } from './Human';
 
-type FilterFunc = (human: Human) => boolean
+type FilterFunc<T> = (data: T) => boolean
 
-type MyTableProps = {
-  humans: Human[];
-  filter?: FilterFunc;
+interface MyTableProps<T> {
+  dataList: T[];
+  filter?: FilterFunc<T>;
+  keys: (keyof T)[];
 }
 
-export class MyTable extends React.Component<MyTableProps> {
-  constructor(props: MyTableProps) {
+export class MyTable<T> extends React.Component<MyTableProps<T>> {
+  constructor(props: MyTableProps<T>) {
     super(props);
   }
   render() {
-    const filter: FilterFunc = this.props.filter || ((human) => true);
-    const rows = this.props.humans
+    const filter: FilterFunc<T> = this.props.filter || ((data) => true);
+    const rows = this.props.dataList
                      .filter(filter)
-                     .map((human) => <HumanRow human={human}
-                                               key={human.name + human.age.toString()}/>);
+                     .map((data) => <Row data={data} keys={this.props.keys}/>);
+    // ↓key は数値とかシンボルかもしれないので toString() してる
     return (
       <table>
         <thead>
           <tr>
-            <th>name</th>
-            <th>age</th>
+            {this.props.keys.map((key) => <th key={key.toString()}>{key}</th>)}
           </tr>
         </thead>
         <tbody>
@@ -34,13 +34,21 @@ export class MyTable extends React.Component<MyTableProps> {
   }
 }
 
-class HumanRow extends React.Component<{ human: Human }> {
+interface IRowProps<T> {
+  data: T;
+  keys: (keyof T)[];
+}
+
+class Row<T> extends React.Component<IRowProps<T>> {
+  constructor(props: IRowProps<T>) {
+    super(props);
+  }
   render() {
-    const human = this.props.human
+    const data: T = this.props.data;
+    const keys: (keyof T)[] = this.props.keys;
     return (
       <tr>
-        <td>{human.name}</td>
-        <td>{human.age}</td>
+        {keys.map((key) => <td key={key.toString()}>{data[key]}</td>)}
       </tr>
     )
   }
