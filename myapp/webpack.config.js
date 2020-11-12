@@ -36,19 +36,19 @@ module.exports = {
   resolve: {
     extensions: [ '.ts', '.tsx', '.js', '.json' ]
   },
-  target: ['web', 'es5'],
+  // target: ['web', 'es5'],
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html'
     })
   ],
-  devServer: {
-    contentBase: dist,
-    watchContentBase: true,
-    inline: true,
-    hot: true
-    /* publicPath: '/',
-     * inline: true */
-  }
+  // devServer: {
+  //   contentBase: dist,
+  //   watchContentBase: true,
+  //   inline: true,
+  //   hot: true
+  //   /* publicPath: '/',
+  //    * inline: true */
+  // }
 };
