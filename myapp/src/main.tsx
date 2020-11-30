@@ -47,6 +47,8 @@ class App extends React.Component<IAppProps, IAppState> {
                  filter={(human: Human) => human.age > this.state.threshold}/>
         <MyTable dataList={[human1, human2, human3, human4]}
                  columns={[new NameColumn(), new AgeColumn()]} />
+        <PopupTest/>
+        <TooltipTest/>
       </div>
     );
   }
@@ -57,6 +59,67 @@ class App extends React.Component<IAppProps, IAppState> {
 
   handleChange(event: ChangeEvent<HTMLInputElement>) {
     this.setState({mytext: event.target.value});
+  }
+}
+
+class PopupTest extends React.Component {
+  // https://techacademy.jp/magazine/32150
+  render() {
+    return (
+      <div className="popup-div">
+        <h2>popup</h2>
+        <Popup buttonText="show popup 1" popupText="popped up! (1)" />
+        <Popup buttonText="show popup 2" popupText="popped up! (2)" />
+        <Popup buttonText="show popup 3" popupText="popped up! (3)" />
+      </div>
+    );
+  }
+}
+
+interface IPopupProps {
+  buttonText: string;
+  popupText: string;
+}
+
+class Popup extends React.Component<IPopupProps> {
+  render() {
+    return (
+      <label>
+        <span>{this.props.buttonText}</span>
+        <input type="checkbox" name="checkbox"/>
+        <div className="popup">
+          {this.props.popupText}
+        </div>
+      </label>
+    );
+  }
+}
+
+class TooltipTest extends React.Component {
+  render() {
+    return (
+      <div className="tooltip-div">
+        <h2>tooltip</h2>
+        {Array.from({length: 10}, (v, k) => k).map((n) => <Tooltip buttonText={`show tooltip ${n}`}
+                                       tooltipText={`text ${n}`}/>)}
+      </div>
+    )
+  }
+}
+
+interface ITooltipProps {
+  buttonText: string;
+  tooltipText: string;
+}
+
+class Tooltip extends React.Component<ITooltipProps> {
+  render() {
+    return (
+      <span className="tooltip">
+        <span className="button">{this.props.buttonText}</span>
+        <div className="description">{this.props.tooltipText}</div>
+      </span>
+    )
   }
 }
 

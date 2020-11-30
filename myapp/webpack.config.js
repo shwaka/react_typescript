@@ -10,6 +10,9 @@ module.exports = {
     path: dist,
     filename: "main.js",
   },
+  devServer: {
+    host: '0.0.0.0',
+  },
   module: {
     rules: [
       {
