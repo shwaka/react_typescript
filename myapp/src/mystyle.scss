@@ -41,7 +41,7 @@ div.popup-div {
 }
 
 div.tooltip-div {
-  span.tooltip {
+  .tooltip {
     position: relative;
     cursor: pointer;
     display: inline-block;
@@ -50,13 +50,17 @@ div.tooltip-div {
     span.button {
       background-color: #eee;
     }
+    input[type="checkbox"] {
+      display: none;
+    }
     div.description {
       display: none;
       position: absolute;
       background-color: orange;
       border-radius: 5px;
     }
-    &:hover div.description {
+    // &:hover div.description,
+    span:focus + div.description {
       display: inline-block;
       z-index: 1;
       top: 20px;

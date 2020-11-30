@@ -115,10 +115,10 @@ interface ITooltipProps {
 class Tooltip extends React.Component<ITooltipProps> {
   render() {
     return (
-      <span className="tooltip">
-        <span className="button">{this.props.buttonText}</span>
+      <label className="tooltip">
+        <span className="button" tabIndex={-1}>{this.props.buttonText}</span>
         <div className="description">{this.props.tooltipText}</div>
-      </span>
+      </label>
     )
   }
 }
