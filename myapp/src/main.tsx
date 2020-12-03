@@ -1,4 +1,5 @@
 import React, {ChangeEvent} from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { render } from 'react-dom';
 import { ThresholdForm } from './ThresholdForm';
 import { Human, NameColumn, AgeColumn } from './Human';
@@ -34,6 +35,9 @@ class App extends React.Component<IAppProps, IAppState> {
     const human4 = new Human("Foo", 1);
     return (
       <div>
+        <div>
+          {ReactDOMServer.renderToStaticMarkup(<div className="hoge">HOGE</div>)}
+        </div>
         <form>
           <label>
             <input type="text" value={this.state.mytext} onChange={this.handleChange} />
